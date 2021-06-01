@@ -1,8 +1,9 @@
 import './App.css'
 import { Switch, Route, Router } from 'react-router-dom'
 // import { ConnectedRouter } from "connected-react-router"
-import Home from './components/Home'
+import HomePage from './components/HomePage'
 import { history } from "./store/index"
+import ChoicesPage from './components/ChoicesPage'
 
 const App = () => {
   return (
@@ -10,8 +11,9 @@ const App = () => {
       <Router history={history}>
         <Switch>
           {/* By using Switch component we're only getting one route rendered at a time */}
-          <Route path="/" component={Home} exact />
-          {/* <Route path="/quiz" component={Quiz} /> */}
+          <Route path="/" component={HomePage} exact />
+          <Route path="/choices" component={ChoicesPage} />
+          {/* <Route path="/guess" component={GuessPage} /> */}
         </Switch>
       </Router>
     </div>
