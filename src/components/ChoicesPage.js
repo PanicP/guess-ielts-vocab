@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import randomObjectKey from 'random-obj-key'
-import * as _ from 'lodash'
+import _ from 'lodash'
 
 import wordingListJSON from '../assets/ielts/academic.json'
+import styled from 'styled-components'
 
 const ReadinessPage = ({ readiness, setReadiness }) => {
   return (
@@ -15,7 +16,8 @@ const ReadinessPage = ({ readiness, setReadiness }) => {
 
 const QuestionPage = ({ wordingList }) => {
   const [score, setScore] = useState(0)
-  const [question, setQuestion] = useState('')
+  const [question, setQuestion] = useState([])
+  const [questionNumber, setQuestionNumber] = useState(1)
 
   useEffect(() => {
     const randomProperty = () => {
@@ -34,22 +36,46 @@ const QuestionPage = ({ wordingList }) => {
           choices.push(tempSelectValue)
         }
       }
-
-      console.log(selectedKey, selectedValue, choices)
-      return 
+      // console.log(selectedKey, selectedValue, choices)
+      return {
+        selectedKey,
+        selectedValue,
+        choices: _.shuffle(choices)
+      }
     }
+
     setQuestion(randomProperty)
-  }, [])
+  }, [questionNumber])
+
+  useEffect(() => {
+    console.log('question', question)
+  }, [question])
+
+  const checkCorrection = ({ choice }) => {
+    if(choice === _.get(question, ['selectedValue'])) {
+      setScore( score + 1 )
+    }
+
+    setQuestionNumber(questionNumber + 1)
+  }
   
   return (
     <div>
       <div>
-        score: {score}
+        score: {score}/{questionNumber - 1}
       </div>
       <div>
-        question
+        Question {questionNumber}: {_.get(question, ['selectedKey'])} 
       </div>
-      
+      <div>
+        {
+          _.get(question, ['choices'], []).map((choice, index) => (
+            <Choices onClick={() => checkCorrection({ choice })}>
+              {index + 1}. {choice}
+            </Choices>
+          ))
+        }
+      </div>
     </div>
   )
 }
@@ -74,3 +100,11 @@ const ChoicesPage = () => {
 }
 
 export default ChoicesPage
+
+const Choices = styled.div`
+  margin-top: 1em;
+  :hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+` 

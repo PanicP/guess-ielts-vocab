@@ -7,9 +7,7 @@ const HomePage = () => {
   return (    
     <>
       Guess the IELTS Word!
-      <button onClick={ () => setTest(test + 1) }>test</button>
-      <span>{test}</span>
-      <Link to="/choices"> Choices Quiz</Link>
+      <Link to="/choices"> Choices Quiz </Link>
     </>
   )
 }
